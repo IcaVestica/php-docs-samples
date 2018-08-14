@@ -41,6 +41,19 @@ $application->add(new Command('create-metric'))
         );
     });
 
+$application->add(new Command('create-uptime-check'))
+    ->setDefinition(clone $inputDefinition)
+    ->addArgument('host_name', InputArgument::OPTIONAL, 'The uptime check host name', 'example.com')
+    ->addArgument('display_name', InputArgument::OPTIONAL, 'The uptime check display name', 'New uptime check')
+    ->setDescription('Creates an uptime check.')
+    ->setCode(function ($input, $output) {
+        create_uptime_check(
+            $input->getArgument('project_id'),
+            $input->getArgument('host_name'),
+            $input->getArgument('display_name')
+        );
+    });
+
 $application->add(new Command('delete-metric'))
     ->setDefinition(clone $inputDefinition)
     ->addArgument('metric_id', InputArgument::REQUIRED, 'The metric descriptor id')
@@ -51,6 +64,18 @@ $application->add(new Command('delete-metric'))
             $input->getArgument('metric_id')
         );
     });
+
+$application->add(new Command('delete-uptime-check'))
+    ->setDefinition(clone $inputDefinition)
+    ->addArgument('config_name', InputArgument::REQUIRED, 'The uptime check config name')
+    ->setDescription('Deletes an uptime check.')
+    ->setCode(function ($input, $output) {
+        create_uptime_check(
+            $input->getArgument('project_id'),
+            $input->getArgument('config_name')
+        );
+    });
+
 
 $application->add(new Command('get-descriptor'))
     ->setDefinition(clone $inputDefinition)

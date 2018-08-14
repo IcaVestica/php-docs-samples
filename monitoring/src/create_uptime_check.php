@@ -25,12 +25,13 @@ namespace Google\Cloud\Samples\Monitoring;
 
 // [START monitoring_uptime_check_create]
 use Google\Cloud\Monitoring\V3\UptimeCheckServiceClient;
+use Google\Cloud\Monitoring\V3\UptimeCheckConfig;
+use Google\Api\MonitoredResource;
 
 /**
- * Adds a new column to the Albums table in the example database.
  * Example:
  * ```
- * delete_metric($projectId, $databaseId);
+ * create_uptime_check($projectId, 'myproject.appspot.com', 'Test Uptime Check!');
  * ```
  *
  * @param string $projectId Your project ID
@@ -39,13 +40,20 @@ use Google\Cloud\Monitoring\V3\UptimeCheckServiceClient;
  */
 function create_uptime_check($projectId, $hostName = 'example.com', $displayName = 'New uptime check')
 {
-    $metrics = new UptimeCheckServiceClient([
+    $uptimeCheckClient = new UptimeCheckServiceClient([
         'projectId' => $projectId,
     ]);
 
-    $metricPath = $metrics->metricDescriptorName($projectId, $metricId);
-    $ret = $metrics->deleteMetricDescriptor($metricPath);
+    $resourceType = new MonitoredResource();
+    $resourceType->setType('uptime_url');
 
-    printf('Deleted a metric: ' . $metricPath . PHP_EOL);
+    $uptimeCheckConfig = new UptimeCheckConfig();
+    $uptimeCheckConfig->setDisplayName($displayName);
+    $uptimeCheckConfig->setMonitoredResource($monitoredResource);
+    $uptimeCheckConfig->setResourceType('uptime_url');
+
+    $metricPath = $uptimeCheckClient->createUptimeCheckConfig($projectId, $metricId);
+
+    printf('Created an uptime check: ' . $metricPath . PHP_EOL);
 }
 // [END monitoring_uptime_check_create]
