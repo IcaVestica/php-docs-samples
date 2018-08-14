@@ -47,7 +47,7 @@ class DeployTest extends TestCase
     {
         // install
         $symfonyVersion = 'symfony/symfony-demo:^1.2';
-        $cmd = sprintf('composer create-project %s %s', $symfonyVersion, $targetDir);
+        $cmd = sprintf('composer create-project --no-scripts %s %s', $symfonyVersion, $targetDir);
         $process = self::createProcess($cmd);
         $process->setTimeout(300); // 5 minutes
         self::executeProcess($process);
